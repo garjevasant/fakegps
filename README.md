@@ -21,15 +21,15 @@ Fake GPS lets developers choose a point on the map, hold a simulated location, o
 
 ### App icon
 
-![Fake GPS app icon](screenshots/Glossy%203D%20VGPS%20Navigation%20Emblem.png)
+<img src="screenshots/Glossy%203D%20VGPS%20Navigation%20Emblem.png" alt="Fake GPS app icon" width="180">
 
 ### App preview
 
 | Splash screen | Map and route | Map styles |
 | --- | --- | --- |
-| ![Fake GPS splash screen](screenshots/Screenshot_20261027_121043.jpg) | ![Fake GPS route view](screenshots/Screenshot_20261027_121110.jpg) | ![Fake GPS map styles](screenshots/Screenshot_20261027_121126.jpg) |
+| <img src="screenshots/Screenshot_20261027_121043.jpg" alt="Fake GPS splash screen" width="150"> | <img src="screenshots/Screenshot_20261027_121110.jpg" alt="Fake GPS route view" width="150"> | <img src="screenshots/Screenshot_20261027_121126.jpg" alt="Fake GPS map styles" width="150"> |
 
-![Fake GPS map view](screenshots/Screenshot_20261027_121132.jpg)
+<img src="screenshots/Screenshot_20261027_121132.jpg" alt="Fake GPS map view" width="190">
 
 ## Requirements
 
