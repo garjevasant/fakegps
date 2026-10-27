@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:gps_mock/services/update_service.dart';
 import 'package:gps_mock/utils/constants.dart';
 
@@ -53,13 +53,30 @@ class UpdateDialog extends StatefulWidget {
   State<UpdateDialog> createState() => _UpdateDialogState();
 }
 
-class _UpdateDialogState extends State<UpdateDialog> {
+class _UpdateDialogState extends State<UpdateDialog>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
   bool _snooze = false;
   bool _downloading = false;
   double _progress = 0;
   int _received = 0;
   int _total = 0;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   Future<void> _later() async {
     if (_snooze) await widget.service.snoozeForToday();
@@ -128,9 +145,46 @@ class _UpdateDialogState extends State<UpdateDialog> {
     final release = widget.release;
 
     return AlertDialog(
-      icon: const Icon(Icons.system_update),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      elevation: 18,
+      icon: AnimatedBuilder(
+        animation: _pulseController,
+        builder: (context, child) => Transform.scale(
+          scale: 1 + (_pulseController.value * .06),
+          child: child,
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [scheme.primary, scheme.tertiary],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: scheme.primary.withAlpha(75),
+                blurRadius: 22,
+                spreadRadius: 3,
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.system_update_rounded,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+      ),
       title: Text(
-        widget.comparable ? 'Update to ${release.version}?' : 'Update available',
+        widget.comparable
+            ? 'Update to ${release.version}?'
+            : 'Update available',
+        textAlign: TextAlign.center,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w800,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -144,8 +198,9 @@ class _UpdateDialogState extends State<UpdateDialog> {
                   : '${release.name} — '
                       'Installed: ${widget.installedVersion.isEmpty ? 'unknown' : widget.installedVersion}'
                       '${release.hasApk ? ' · ${release.sizeLabel} download' : ''}',
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: theme.textTheme.bodyMedium?.copyWith(
                 color: scheme.onSurfaceVariant,
+                height: 1.4,
               ),
             ),
             if (release.notes.isNotEmpty) ...[
@@ -157,6 +212,9 @@ class _UpdateDialogState extends State<UpdateDialog> {
                 decoration: BoxDecoration(
                   color: scheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: scheme.outlineVariant.withAlpha(100),
+                  ),
                 ),
                 child: SingleChildScrollView(
                   child: Text(
@@ -182,7 +240,10 @@ class _UpdateDialogState extends State<UpdateDialog> {
                 borderRadius: BorderRadius.circular(6),
                 child: LinearProgressIndicator(
                   value: _total > 0 ? _progress : null,
-                  minHeight: 8,
+                  minHeight: 10,
+                  backgroundColor: scheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(20),
+                  valueColor: AlwaysStoppedAnimation(scheme.primary),
                 ),
               ),
               const SizedBox(height: 8),
@@ -230,7 +291,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
         ),
       ),
       actions: [
-        TextButton(
+        OutlinedButton(
           onPressed: _downloading
               ? null
               : () => widget.service.platform.openUrl(release.pageUrl),
@@ -240,9 +301,12 @@ class _UpdateDialogState extends State<UpdateDialog> {
           onPressed: _downloading ? null : _later,
           child: const Text('Later'),
         ),
-        FilledButton(
+        FilledButton.icon(
           onPressed: _downloading ? null : _update,
-          child: Text(release.hasApk ? 'Update' : 'Open page'),
+          icon: Icon(
+            release.hasApk ? Icons.download_rounded : Icons.open_in_new_rounded,
+          ),
+          label: Text(release.hasApk ? 'Update' : 'Open page'),
         ),
       ],
     );
@@ -329,5 +393,3 @@ Future<void> openProjectLink(BuildContext context, String url) async {
 
 /// Shorthand for the repository, used from more than one place.
 String get repositoryUrl => AppConstants.repositoryUrl;
-
-
