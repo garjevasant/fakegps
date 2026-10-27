@@ -25,11 +25,9 @@ Fake GPS lets developers choose a point on the map, hold a simulated location, o
 
 ### App preview
 
-| Splash screen | Map and route | Map styles |
-| --- | --- | --- |
-| <img src="screenshots/Screenshot_20261027_121043.jpg" alt="Fake GPS splash screen" width="150"> | <img src="screenshots/Screenshot_20261027_121110.jpg" alt="Fake GPS route view" width="150"> | <img src="screenshots/Screenshot_20261027_121126.jpg" alt="Fake GPS map styles" width="150"> |
-
-<img src="screenshots/Screenshot_20261027_121132.jpg" alt="Fake GPS map view" width="190">
+| Splash | Route | Map styles | Map view |
+| --- | --- | --- | --- |
+| <img src="screenshots/Screenshot_20261027_121043.jpg" alt="Fake GPS splash screen" width="120"> | <img src="screenshots/Screenshot_20261027_121110.jpg" alt="Fake GPS route view" width="120"> | <img src="screenshots/Screenshot_20261027_121126.jpg" alt="Fake GPS map styles" width="120"> | <img src="screenshots/Screenshot_20261027_121132.jpg" alt="Fake GPS map view" width="120"> |
 
 ## Requirements
 
