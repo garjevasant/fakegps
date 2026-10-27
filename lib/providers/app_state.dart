@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -114,6 +114,8 @@ class AppState with ChangeNotifier {
   bool _initialized = false;
   bool _isMocking = false;
   LatLng? _currentLocation;
+  LatLng? _realLocation;
+
   /// Shown until a real location has been picked or reverse-geocoded.
   static const _addressPlaceholder = 'Drag the pin to choose a spot';
 
@@ -167,6 +169,7 @@ class AppState with ChangeNotifier {
   bool get initialized => _initialized;
   bool get isMocking => _isMocking;
   LatLng? get currentLocation => _currentLocation;
+  LatLng? get realLocation => _realLocation;
   String get currentAddress => _currentAddress;
 
   /// Whether the pin has a real label rather than the "drag me" placeholder.
@@ -188,6 +191,7 @@ class AppState with ChangeNotifier {
     }
     return null;
   }
+
   bool? get isMockLocationApp => _isMockLocationApp;
   CameraRequest? get cameraRequest => _cameraRequest;
   String? get lastError => _lastError;
@@ -290,8 +294,9 @@ class AppState with ChangeNotifier {
       unawaited(_syncFavoritesToNative());
       _mapStyle = MapStyleId.values.asNameMap()[prefs.getString('map_style')] ??
           MapStyleId.auto;
-      _themeMode = ThemeMode.values.asNameMap()[prefs.getString('theme_mode')] ??
-          ThemeMode.system;
+      _themeMode =
+          ThemeMode.values.asNameMap()[prefs.getString('theme_mode')] ??
+              ThemeMode.system;
       _recentSearches = prefs.getStringList('recent_searches') ?? [];
       _routeAreas = (prefs.getStringList('route_areas') ?? [])
           .map((item) => RouteArea.fromJson(jsonDecode(item)))
@@ -318,7 +323,10 @@ class AppState with ChangeNotifier {
       } else {
         // Mocking is off: calibrate the map to the device's real position.
         final quick = await _lastKnownDevicePosition();
-        if (quick != null) _currentLocation = quick;
+        if (quick != null) {
+          _realLocation = quick;
+          _currentLocation = quick;
+        }
         unawaited(moveToRealLocation());
       }
     } catch (_) {
@@ -377,7 +385,18 @@ class AppState with ChangeNotifier {
         position = await Geolocator.getLastKnownPosition();
       }
       if (position == null) return false;
-      requestCamera(LatLng(position.latitude, position.longitude), zoom: 16);
+      final location = LatLng(position.latitude, position.longitude);
+      _realLocation = location;
+      // When mocking is off, the selected pin should follow the real device.
+      // While mocking, keep the mock pin where the user placed it and show the
+      // real position separately on the map.
+      if (!_isMocking) {
+        _currentLocation = location;
+        _currentAddress = _format(location);
+        unawaited(_persistLastLocation());
+      }
+      notifyListeners();
+      requestCamera(location, zoom: 16);
       return true;
     } catch (_) {
       return false;
@@ -967,5 +986,3 @@ class AppState with ChangeNotifier {
   String _format(LatLng loc) =>
       "${loc.latitude.toStringAsFixed(6)}, ${loc.longitude.toStringAsFixed(6)}";
 }
-
-

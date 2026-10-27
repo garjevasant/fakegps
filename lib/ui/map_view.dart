@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:ui' show PlatformDispatcher;
@@ -733,6 +733,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
       _style.id.name,
       _threeDimensional,
       appState.favorites.map((f) => f.id).join(','),
+      appState.realLocation,
       showRoute,
       route?.length ?? 0,
       route?.firstOrNull,
@@ -785,6 +786,20 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
           _favoriteCircles[circle.id] =
               LatLng(favorite.latitude, favorite.longitude);
         }
+      }
+
+      final realLocation = appState.realLocation;
+      if (realLocation != null) {
+        await controller.addCircle(
+          ml.CircleOptions(
+            geometry: _toMl(realLocation),
+            circleRadius: 10,
+            circleColor: '#2F80ED',
+            circleOpacity: .95,
+            circleStrokeColor: '#FFFFFF',
+            circleStrokeWidth: 3,
+          ),
+        );
       }
 
       if (appState.isNavigating) {
@@ -1474,5 +1489,3 @@ class _EdgeMarker {
     );
   }
 }
-
-
