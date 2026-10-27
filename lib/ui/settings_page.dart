@@ -1,6 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:gps_mock/models/map_style.dart';
 import 'package:gps_mock/providers/app_state.dart';
+import 'package:gps_mock/services/update_service.dart';
 import 'package:gps_mock/ui/offline_maps_page.dart';
 import 'package:gps_mock/ui/permissions_sheet.dart';
 import 'package:gps_mock/ui/theme.dart';
@@ -18,7 +19,19 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final UpdateService _updates = UpdateService();
   String _version = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final version = await _updates.platform.installedVersion();
+    if (mounted) setState(() => _version = version);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +115,15 @@ class _SettingsPageState extends State<SettingsPage> {
                   onTap: appState.recentSearches.isEmpty
                       ? null
                       : appState.clearRecentSearches,
+                ),
+                _Section(title: 'App'),
+                _Tile(
+                  icon: Icons.system_update,
+                  title: 'Check for app updates',
+                  subtitle: _version.isEmpty
+                      ? 'Fetch the latest Fake GPS release'
+                      : 'Installed version $_version',
+                  onTap: () => checkForUpdatesInteractively(context, _updates),
                 ),
                 const SizedBox(height: 28),
                 const _CreatorSignature(),
@@ -509,5 +531,3 @@ class _Tile extends StatelessWidget {
     );
   }
 }
-
-
