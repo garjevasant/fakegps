@@ -1,0 +1,274 @@
+﻿package com.vasant.fakegps
+
+import android.app.AppOpsManager
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.os.Process
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+    private val CHANNEL = "com.mockgps/service"
+    private val LINKS_CHANNEL = "com.mockgps/links"
+
+    /** The newest location link or shared text not yet taken by Flutter.
+     *  Flutter pulls it (takePendingLink) once its UI is ready, and is told
+     *  when another one arrives while the app is open. */
+    private var pendingLink: String? = null
+    private var linksChannel: MethodChannel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // A recreated activity still carries its original intent â€” only a
+        // fresh launch delivers a new link.
+        if (savedInstanceState == null) pendingLink = linkFrom(intent)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        val link = linkFrom(intent) ?: return
+        pendingLink = link
+        linksChannel?.invokeMethod("linkAvailable", null)
+    }
+
+    /** The location text an intent carries: a VIEW intent's URI (geo:,
+     *  map-site links) or text shared with ACTION_SEND. */
+    private fun linkFrom(intent: Intent?): String? {
+        intent ?: return null
+        // Reopening from Recents replays the launch intent; it was handled.
+        if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY != 0) return null
+        return when (intent.action) {
+            Intent.ACTION_VIEW -> intent.dataString
+            Intent.ACTION_SEND -> {
+                val text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.toString()
+                val subject = intent.getStringExtra(Intent.EXTRA_SUBJECT)
+                when {
+                    text.isNullOrBlank() -> subject
+                    // Some apps put the place name only in the subject.
+                    !subject.isNullOrBlank() && !text.contains(subject) ->
+                        "$subject\n$text"
+                    else -> text
+                }
+            }
+            else -> null
+        }?.takeIf { it.isNotBlank() }
+    }
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        linksChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, LINKS_CHANNEL).apply {
+            setMethodCallHandler { call, result ->
+                when (call.method) {
+                    "takePendingLink" -> {
+                        result.success(pendingLink)
+                        pendingLink = null
+                    }
+                    else -> result.notImplemented()
+                }
+            }
+        }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "startMocking" -> {
+                    val lat = call.argument<Double>("lat")
+                    val lng = call.argument<Double>("lng")
+                    if (lat != null && lng != null) {
+                        val intent = Intent(this, MockingService::class.java).apply {
+                            action = MockingService.ACTION_START_FIXED
+                            putExtra(MockingService.EXTRA_LAT, lat)
+                            putExtra(MockingService.EXTRA_LNG, lng)
+                            putExtra(MockingService.EXTRA_LABEL, call.argument<String>("label"))
+                            putExtra(MockingService.EXTRA_FAVORITE_ID, call.argument<String>("favoriteId"))
+                        }
+                        startMockingService(intent)
+                        result.success(null)
+                    } else {
+                        result.error("INVALID_ARGS", "Lat/Lng missing", null)
+                    }
+                }
+                "startRoute" -> {
+                    val routeFile = call.argument<String>("routeFile")
+                    val durationSeconds = call.argument<Int>("durationSeconds")
+                    if (routeFile != null && durationSeconds != null && durationSeconds > 0) {
+                        val intent = Intent(this, MockingService::class.java).apply {
+                            action = MockingService.ACTION_START_ROUTE
+                            putExtra(MockingService.EXTRA_ROUTE_FILE, routeFile)
+                            putExtra(MockingService.EXTRA_DURATION_SECONDS, durationSeconds)
+                            putExtra(MockingService.EXTRA_LABEL, call.argument<String>("label"))
+                            putExtra(MockingService.EXTRA_FROM_LABEL, call.argument<String>("fromLabel"))
+                            putExtra(MockingService.EXTRA_TO_LABEL, call.argument<String>("toLabel"))
+                            putExtra(MockingService.EXTRA_STOPS_JSON, call.argument<String>("stopsJson"))
+                            putExtra(
+                                MockingService.EXTRA_DISTANCE_METERS,
+                                call.argument<Double>("distanceMeters") ?: 0.0
+                            )
+                        }
+                        startMockingService(intent)
+                        result.success(null)
+                    } else {
+                        result.error("INVALID_ARGS", "routeFile/durationSeconds missing", null)
+                    }
+                }
+                "getHistory" -> result.success(MockStateStore.getHistoryJson(this))
+                "clearHistory" -> {
+                    MockStateStore.clearHistory(this)
+                    result.success(null)
+                }
+                "stopMocking" -> {
+                    val intent = Intent(this, MockingService::class.java)
+                    intent.action = MockingService.ACTION_STOP
+                    startService(intent)
+                    result.success(null)
+                }
+                "getMockStatus" -> result.success(MockingService.statusMap())
+                "isMockLocationApp" -> result.success(isMockLocationApp())
+                "syncFavorites" -> {
+                    val json = call.argument<String>("json")
+                    if (json != null) {
+                        MockStateStore.setFavoritesJson(this, json)
+                        call.argument<String>("tileSlots")?.let {
+                            MockStateStore.setTileSlotsJson(this, it)
+                        }
+                        // Tiles and widgets mirror the favorites list.
+                        com.vasant.fakegps.tiles.BaseFavoriteTileService.refreshAll(this)
+                        com.vasant.fakegps.widgets.FavoriteWidgetProvider.refreshAll(this)
+                    }
+                    result.success(null)
+                }
+                "openDeveloperSettings" -> {
+                    try {
+                        startActivity(Intent(android.provider.Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))
+                        result.success(null)
+                    } catch (e: Exception) {
+                        // Fallback to generic settings if dev settings intent not found
+                        startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))
+                        result.success(null)
+                    }
+                }
+                "getAppVersion" -> {
+                    val info = packageManager.getPackageInfo(packageName, 0)
+                    result.success(
+                        mapOf(
+                            "versionName" to (info.versionName ?: ""),
+                            "packageName" to packageName,
+                        )
+                    )
+                }
+                "canInstallPackages" -> result.success(canInstallPackages())
+                "requestInstallPermission" -> {
+                    requestInstallPermission()
+                    result.success(null)
+                }
+                "installApk" -> {
+                    val path = call.argument<String>("path")
+                    if (path == null) {
+                        result.error("INVALID_ARGS", "path missing", null)
+                    } else {
+                        try {
+                            installApk(path)
+                            result.success(true)
+                        } catch (e: Exception) {
+                            result.error("INSTALL_FAILED", e.message, null)
+                        }
+                    }
+                }
+                "openUrl" -> {
+                    val url = call.argument<String>("url")
+                    if (url == null) {
+                        result.error("INVALID_ARGS", "url missing", null)
+                    } else {
+                        try {
+                            startActivity(
+                                Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            )
+                            result.success(true)
+                        } catch (e: Exception) {
+                            result.success(false)
+                        }
+                    }
+                }
+                else -> result.notImplemented()
+            }
+        }
+    }
+
+    /** Whether the user has allowed this app to install APKs. Below Android
+     *  O the permission is granted at install time. */
+    private fun canInstallPackages(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            packageManager.canRequestPackageInstalls()
+        } else {
+            true
+        }
+    }
+
+    /** Sends the user to the system screen where "install unknown apps" is
+     *  granted for this app. */
+    private fun requestInstallPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        try {
+            startActivity(
+                Intent(
+                    android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    android.net.Uri.parse("package:$packageName"),
+                )
+            )
+        } catch (e: Exception) {
+            startActivity(Intent(android.provider.Settings.ACTION_SETTINGS))
+        }
+    }
+
+    /** Hands a downloaded APK to the system installer. The file is shared
+     *  through a FileProvider because a raw file:// URI is rejected from
+     *  Android N onwards. */
+    private fun installApk(path: String) {
+        val file = java.io.File(path)
+        if (!file.exists()) throw IllegalStateException("Update file is missing")
+        val uri = androidx.core.content.FileProvider.getUriForFile(
+            this,
+            "$packageName.updates",
+            file,
+        )
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/vnd.android.package-archive")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intent)
+    }
+
+    private fun startMockingService(intent: Intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
+    }
+
+    /** True when this app is selected as the mock location app in
+     *  Developer Options. */
+    private fun isMockLocationApp(): Boolean {
+        return try {
+            val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                appOps.unsafeCheckOpNoThrow(
+                    AppOpsManager.OPSTR_MOCK_LOCATION, Process.myUid(), packageName
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                appOps.checkOpNoThrow(
+                    AppOpsManager.OPSTR_MOCK_LOCATION, Process.myUid(), packageName
+                )
+            }
+            mode == AppOpsManager.MODE_ALLOWED
+        } catch (e: Exception) {
+            false
+        }
+    }
+}
+
