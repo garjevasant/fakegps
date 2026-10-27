@@ -14,7 +14,7 @@ extension AreaLevelInfo on AreaLevel {
       };
 
   /// Zoom range downloaded for this level. Bigger areas stop at coarser zooms
-  /// â€” a whole country at street zoom would be millions of tiles.
+  /// — a whole country at street zoom would be millions of tiles.
   (double, double) get zoomRange => switch (this) {
         AreaLevel.country => (3, 8),
         AreaLevel.state => (5, 10),
@@ -48,7 +48,7 @@ class OfflineArea {
     this.styleUrl = '',
   });
 
-  /// The MapLibre offline region id â€” the handle used to delete it.
+  /// The MapLibre offline region id — the handle used to delete it.
   final int id;
   final String name;
   final AreaLevel level;
@@ -98,7 +98,7 @@ class OfflineArea {
   }
 }
 
-/// One node of the country â†’ state â†’ district â†’ city tree the offline list
+/// One node of the country → state → district → city tree the offline list
 /// renders. A node may carry its own downloaded area, or exist only to hold
 /// children (a country row above its cities, say).
 class AreaNode {
@@ -109,7 +109,7 @@ class AreaNode {
   final List<AreaNode> children = [];
   final List<OfflineArea> areas = [];
 
-  /// Every area at or under this node â€” what deleting the node removes.
+  /// Every area at or under this node — what deleting the node removes.
   List<OfflineArea> get allAreas => [
         ...areas,
         for (final child in children) ...child.allAreas,
@@ -169,4 +169,5 @@ class AreaNode {
     return child;
   }
 }
+
 

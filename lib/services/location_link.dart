@@ -27,7 +27,7 @@ class LinkPlaceQuery extends LinkResult {
   final bool asDestination;
 }
 
-/// A short link (maps.app.goo.gl, osm.org/go â€¦) that must be followed to the
+/// A short link (maps.app.goo.gl, osm.org/go …) that must be followed to the
 /// full URL before it can be read.
 class LinkShortUrl extends LinkResult {
   const LinkShortUrl(this.url);
@@ -35,7 +35,7 @@ class LinkShortUrl extends LinkResult {
   final Uri url;
 }
 
-/// Nothing usable â€” [reason] says why, in words fit for the user.
+/// Nothing usable — [reason] says why, in words fit for the user.
 class LinkInvalid extends LinkResult {
   const LinkInvalid(this.reason, {this.unsupportedSite = false});
 
@@ -60,14 +60,14 @@ class LocationLinkParser {
   );
 
   /// Parses whatever was shared or opened: a bare link, a link inside some
-  /// text (Google Maps shares "Place name\nhttps://â€¦"), or coordinates.
+  /// text (Google Maps shares "Place name\nhttps://…"), or coordinates.
   static LinkResult parse(String input) {
     final text = input.trim();
     if (text.isEmpty) return const LinkInvalid('The shared text was empty.');
 
     final match = _urlPattern.firstMatch(text);
     if (match != null) {
-      // Trailing punctuation from prose ("â€¦ here: https://â€¦).") is not part
+      // Trailing punctuation from prose ("… here: https://…).") is not part
       // of the link.
       final raw = _trimTrailingPunctuation(match.group(0)!);
       final result = parseLink(raw);
@@ -94,7 +94,7 @@ class LocationLinkParser {
   }
 
   /// Drops sentence punctuation stuck to the end of a link, keeping a
-  /// closing parenthesis that belongs to it (`geo:â€¦?q=lat,lng(Label)`).
+  /// closing parenthesis that belongs to it (`geo:…?q=lat,lng(Label)`).
   static String _trimTrailingPunctuation(String link) {
     var result = link;
     while (result.isNotEmpty) {
@@ -147,7 +147,7 @@ class LocationLinkParser {
     final generic = _genericCoordinates(uri);
     if (generic != null) return generic;
     return LinkInvalid(
-      'Links from ${uri.host} aren\'t supported â€” share a Google Maps, '
+      'Links from ${uri.host} aren\'t supported — share a Google Maps, '
       'OpenStreetMap, Apple Maps or Waze link, or plain coordinates.',
       unsupportedSite: true,
     );
@@ -155,7 +155,7 @@ class LocationLinkParser {
 
   // ------------------------------------------------------------------ geo:
 
-  /// `geo:lat,lng[,alt][;crs=â€¦;u=â€¦][?q=lat,lng(Label)|q=address&z=â€¦]`
+  /// `geo:lat,lng[,alt][;crs=…;u=…][?q=lat,lng(Label)|q=address&z=…]`
   static LinkResult _parseGeo(String raw) {
     final body = raw.substring(4);
     final queryStart = body.indexOf('?');
@@ -231,7 +231,7 @@ class LocationLinkParser {
     final params = uri.queryParameters;
     final path = Uri.decodeComponent(uri.path);
 
-    // Directions: â€¦/maps/dir/?api=1&destination=â€¦ or ?daddr=â€¦
+    // Directions: …/maps/dir/?api=1&destination=… or ?daddr=…
     final destination = params['destination'] ?? params['daddr'];
     if (destination != null && destination.isNotEmpty) {
       return _coordsOrQuery(destination, asDestination: true);
@@ -268,7 +268,7 @@ class LocationLinkParser {
       }
     }
 
-    // The map viewport (/@lat,lng,zoom) â€” the best there is for a link that
+    // The map viewport (/@lat,lng,zoom) — the best there is for a link that
     // only names a place; otherwise fall back to looking the name up.
     final viewport =
         RegExp(r'@([-+]?\d+(?:\.\d+)?),([-+]?\d+(?:\.\d+)?)').firstMatch(path);
@@ -423,7 +423,7 @@ class LocationLinkResolver {
         next = await _follow(result.url);
       } catch (_) {
         return const LinkInvalid(
-          'Couldn\'t open the short link â€” check your internet connection '
+          'Couldn\'t open the short link — check your internet connection '
           'and try again.',
         );
       }
@@ -460,4 +460,5 @@ class LocationLinkResolver {
     return url.resolve(location).toString();
   }
 }
+
 

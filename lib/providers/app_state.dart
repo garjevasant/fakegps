@@ -121,7 +121,7 @@ class AppState with ChangeNotifier {
   List<LocationItem> _favorites = [];
 
   /// Favorite id shown on each quick-settings tile ('' when unassigned),
-  /// or null until the user assigns one â€” tiles then show the first
+  /// or null until the user assigns one — tiles then show the first
   /// favorites in list order, as they always did.
   static const tileSlotCount = 4;
   List<String>? _assignedTileSlots;
@@ -217,7 +217,7 @@ class AppState with ChangeNotifier {
     _pendingWaypointPick = null;
     if (value && _routeOrigin == null && _currentLocation != null) {
       _routeOrigin = _currentLocation;
-      // The placeholder is an instruction, not a place name â€” fall back to
+      // The placeholder is an instruction, not a place name — fall back to
       // coordinates until the pin has a real label.
       _routeOriginLabel = _currentAddress == _addressPlaceholder
           ? _format(_currentLocation!)
@@ -310,7 +310,7 @@ class AppState with ChangeNotifier {
 
       final status = await _client.getMockStatus();
       if (status.active) {
-        // The service kept mocking while the app was away â€” reflect it.
+        // The service kept mocking while the app was away — reflect it.
         _isMocking = true;
         _mockStatus = status;
         _currentLocation = LatLng(status.latitude, status.longitude);
@@ -322,7 +322,7 @@ class AppState with ChangeNotifier {
         unawaited(moveToRealLocation());
       }
     } catch (_) {
-      // Never block startup on a failed restore â€” the map falls back to
+      // Never block startup on a failed restore — the map falls back to
       // whatever was recovered before the failure.
     } finally {
       _startStatusPolling();
@@ -335,7 +335,7 @@ class AppState with ChangeNotifier {
     try {
       await [Permission.location, Permission.notification].request();
     } catch (_) {
-      // Permission plugin unavailable (e.g. tests) â€” continue without.
+      // Permission plugin unavailable (e.g. tests) — continue without.
     }
   }
 
@@ -629,7 +629,7 @@ class AppState with ChangeNotifier {
       await _client.startRoute(
         routeFilePath: file.path,
         durationSeconds: durationMinutes * 60,
-        label: '$from â†’ $to$stops',
+        label: '$from → $to$stops',
         fromLabel: from,
         toLabel: to,
         distanceMeters: route.distanceMeters,
@@ -639,7 +639,7 @@ class AppState with ChangeNotifier {
       _ignoreInactiveUntil = DateTime.now().add(const Duration(seconds: 3));
       notifyListeners();
       unawaited(_maybeRequestBatteryExemption());
-      unawaited(_rememberRouteArea('$from â†’ $to', route.points));
+      unawaited(_rememberRouteArea('$from → $to', route.points));
       return MockToggleResult.started;
     } on PlatformException catch (e) {
       _lastError = e.message ?? 'Could not start the route simulation';
@@ -711,7 +711,7 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Long route simulations die if the system puts the app to sleep â€” ask
+  /// Long route simulations die if the system puts the app to sleep — ask
   /// for the battery-optimization exemption once, on the first route start.
   Future<void> _maybeRequestBatteryExemption() async {
     try {
@@ -761,14 +761,14 @@ class AppState with ChangeNotifier {
     );
   }
 
-  /// Keeps the UI in sync with the native service â€” covers route progress,
+  /// Keeps the UI in sync with the native service — covers route progress,
   /// the notification Stop button, and quick-settings tiles/widgets changing
   /// the mock while the app is open.
   Future<void> _pollStatus() async {
     final status = await _client.getMockStatus();
 
     // Right after a start call the service may not have published its status
-    // yet â€” don't let one stale "inactive" reading flicker the UI.
+    // yet — don't let one stale "inactive" reading flicker the UI.
     if (!status.active && DateTime.now().isBefore(_ignoreInactiveUntil)) {
       return;
     }
@@ -843,7 +843,7 @@ class AppState with ChangeNotifier {
           .toList();
       notifyListeners();
     } catch (_) {
-      // File gone â€” navigation still works, just without the polyline.
+      // File gone — navigation still works, just without the polyline.
     } finally {
       _reloadingActiveRoute = false;
     }
@@ -967,4 +967,5 @@ class AppState with ChangeNotifier {
   String _format(LatLng loc) =>
       "${loc.latitude.toStringAsFixed(6)}, ${loc.longitude.toStringAsFixed(6)}";
 }
+
 

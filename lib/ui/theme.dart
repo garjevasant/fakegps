@@ -1,6 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 
-/// Status colours that sit outside the Material palette â€” "mocking is live",
+/// Status colours that sit outside the Material palette — "mocking is live",
 /// "stop", and the route waypoint roles. They are defined per brightness so
 /// call sites never hardcode `Colors.green.shade700`, which is unreadable on
 /// a dark surface.
@@ -117,7 +117,7 @@ extension StatusColorsX on ThemeData {
 class AppTheme {
   const AppTheme._();
 
-  /// Map-blue seed â€” this is a map tool first.
+  /// Map-blue seed — this is a map tool first.
   static const seed = Color(0xFF2E6BE6);
 
   /// The corner radius shared by cards, sheets and inputs.
@@ -248,4 +248,5 @@ class AppTheme {
     );
   }
 }
+
 

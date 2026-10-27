@@ -32,7 +32,7 @@ class MapStyle {
   /// Whether this style has a `buildings` layer the 3D toggle can extrude.
   final bool supports3d;
 
-  /// Whether the style renders a dark basemap â€” drives the contrast of the
+  /// Whether the style renders a dark basemap — drives the contrast of the
   /// overlays drawn on top of it.
   final bool isDark;
 
@@ -75,14 +75,14 @@ class MapStyle {
       id: MapStyleId.streets,
       name: 'Streets',
       description: 'Detailed, colourful road map',
-      attribution: 'Â© OpenStreetMap contributors Â· OpenFreeMap',
+      attribution: '© OpenStreetMap contributors · OpenFreeMap',
       styleUrl: 'https://tiles.openfreemap.org/styles/liberty',
     ),
     const MapStyle(
       id: MapStyleId.minimal,
       name: 'Minimal',
       description: 'Muted basemap, data stands out',
-      attribution: 'Â© OpenStreetMap contributors Â· OpenFreeMap',
+      attribution: '© OpenStreetMap contributors · OpenFreeMap',
       styleUrl: 'https://tiles.openfreemap.org/styles/positron',
     ),
     _dark,
@@ -90,7 +90,7 @@ class MapStyle {
       id: MapStyleId.satellite,
       name: 'Satellite',
       description: 'Aerial imagery',
-      attribution: 'Â© Esri Â· Maxar Â· Earthstar Geographics',
+      attribution: '© Esri · Maxar · Earthstar Geographics',
       styleJson: _satelliteStyleJson,
       isDark: true,
     ),
@@ -107,7 +107,7 @@ class MapStyle {
     return darkTheme ? _dark : _light;
   }
 
-  /// Esri's World Imagery wrapped in a minimal MapLibre raster style â€” the
+  /// Esri's World Imagery wrapped in a minimal MapLibre raster style — the
   /// tile service is keyless but publishes no style document of its own.
   static final String _satelliteStyleJson = jsonEncode({
     'version': 8,
@@ -120,7 +120,7 @@ class MapStyle {
         ],
         'tileSize': 256,
         'maxzoom': 19,
-        'attribution': 'Â© Esri Â· Maxar Â· Earthstar Geographics',
+        'attribution': '© Esri · Maxar · Earthstar Geographics',
       },
     },
     'layers': [
@@ -139,4 +139,5 @@ class MapStyle {
     ],
   });
 }
+
 

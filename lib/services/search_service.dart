@@ -17,7 +17,7 @@ class PlaceSuggestion {
   });
 }
 
-/// A place with a known extent â€” a city, district, state or country â€” used
+/// A place with a known extent — a city, district, state or country — used
 /// when choosing an area to make available offline.
 class PlaceArea {
   const PlaceArea({
@@ -41,7 +41,7 @@ class PlaceArea {
   final String district;
 }
 
-/// Place search backed by Photon (photon.komoot.io) â€” a free, keyless
+/// Place search backed by Photon (photon.komoot.io) — a free, keyless
 /// OpenStreetMap geocoder built for search-as-you-type.
 class SearchService {
   final http.Client _client = http.Client();
@@ -73,7 +73,7 @@ class SearchService {
   }
 
   /// Accepts "12.9716, 77.5946" and the same with a space or semicolon
-  /// separator â€” pasting coordinates is the fastest way to mock an exact
+  /// separator — pasting coordinates is the fastest way to mock an exact
   /// point, so it is treated as a first-class query.
   static LatLng? parseCoordinates(String input) {
     final match = RegExp(
@@ -144,7 +144,7 @@ class SearchService {
   }
 
   /// Parses Photon features that carry an `extent` into [PlaceArea]s.
-  /// Features without one (a house, a shop) are skipped â€” there is nothing
+  /// Features without one (a house, a shop) are skipped — there is nothing
   /// sensible to download for them.
   static List<PlaceArea> parsePhotonAreas(String body) {
     final json = jsonDecode(body) as Map<String, dynamic>;
@@ -186,4 +186,5 @@ class SearchService {
     return results;
   }
 }
+
 

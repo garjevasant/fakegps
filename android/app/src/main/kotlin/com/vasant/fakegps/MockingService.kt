@@ -52,7 +52,7 @@ class MockingService : Service() {
     /** Google Play services' fused provider, which most apps read through.
      *  It blends GPS with Wi-Fi/cell fixes computed inside Play services, so
      *  LocationManager test providers alone can't stop the real position
-     *  from bleeding through â€” it has to be put into mock mode itself. */
+     *  from bleeding through — it has to be put into mock mode itself. */
     private val fusedClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(this)
     }
@@ -175,9 +175,9 @@ class MockingService : Service() {
     ) {
         if (Build.VERSION.SDK_INT < 36) {
             val text = if (arrived) {
-                "${command.optString("label")} Â· arrived, holding position"
+                "${command.optString("label")} · arrived, holding position"
             } else {
-                "${command.optString("label")} Â· ${formatRemaining(remainingSeconds)} left"
+                "${command.optString("label")} · ${formatRemaining(remainingSeconds)} left"
             }
             updateNotification(text, if (arrived) "Mock route finished" else "Mock route active")
             return
@@ -228,8 +228,8 @@ class MockingService : Service() {
             .firstOrNull { it.optDouble("progress") > progress }
             ?.optString("label")
         val text = when {
-            arrived -> "Arrived Â· holding final position"
-            nextStop != null -> "${formatRemaining(remainingSeconds)} left Â· next: $nextStop"
+            arrived -> "Arrived · holding final position"
+            nextStop != null -> "${formatRemaining(remainingSeconds)} left · next: $nextStop"
             else -> "${formatRemaining(remainingSeconds)} left"
         }
         val notification = Notification.Builder(this, CHANNEL_ID)
@@ -414,14 +414,14 @@ class MockingService : Service() {
 
         startFixedMocking(fixedCommand)
 
-        updateNotification("Arrived Â· holding $label", "Mock location active")
+        updateNotification("Arrived · holding $label", "Mock location active")
         NavigationWidgetProvider.pushIdle(this)
         BaseFavoriteTileService.refreshAll(this)
         FavoriteWidgetProvider.refreshAll(this)
     }
 
     /** Composes a small map image centred on the mock position for the
-     *  navigation widget by stitching OpenStreetMap tiles â€” completely free,
+     *  navigation widget by stitching OpenStreetMap tiles — completely free,
      *  no API key. Returns null when the network fails; the widget then
      *  shows text-only progress. */
     private fun fetchStaticMapBitmap(lat: Double, lng: Double): Bitmap? {
@@ -472,7 +472,7 @@ class MockingService : Service() {
         }
     }
 
-    /** Fetches one OSM tile, with a small in-memory cache â€” successive
+    /** Fetches one OSM tile, with a small in-memory cache — successive
      *  widget refreshes mostly reuse the same tiles as the position moves. */
     private fun fetchOsmTile(zoom: Int, x: Int, y: Int): Bitmap? {
         val key = "$zoom/$x/$y"
@@ -597,7 +597,7 @@ class MockingService : Service() {
         try {
             fusedClient.setMockMode(true)
         } catch (e: Exception) {
-            // No Play services, or not the mock location app â€” the
+            // No Play services, or not the mock location app — the
             // LocationManager providers below still cover framework readers.
         }
         // Mock every provider a consumer might read. Mocking GPS alone leaves
@@ -624,7 +624,7 @@ class MockingService : Service() {
             try {
                 locationManager.setTestProviderEnabled(provider, true)
             } catch (e: Exception) {
-                // Ignore â€” pushes to this provider will simply be skipped.
+                // Ignore — pushes to this provider will simply be skipped.
             }
         }
     }
@@ -645,7 +645,7 @@ class MockingService : Service() {
                 locationManager.setTestProviderLocation(provider, mockLocation)
                 pushedAny = true
             } catch (e: SecurityException) {
-                // Android refused the mock push â€” almost always because the
+                // Android refused the mock push — almost always because the
                 // app is not (or no longer) selected as the mock location app.
                 refused = true
             } catch (e: Exception) {
@@ -655,7 +655,7 @@ class MockingService : Service() {
         try {
             fusedClient.setMockLocation(buildLocation(FUSED, lat, lng, bearing, speedMps))
         } catch (e: Exception) {
-            // Play services unavailable â€” framework providers were still fed.
+            // Play services unavailable — framework providers were still fed.
         }
         // Only warn when nothing at all got through: a device that lacks the
         // network provider is not a misconfiguration.
@@ -689,7 +689,7 @@ class MockingService : Service() {
         try {
             fusedClient.setMockMode(false)
         } catch (e: Exception) {
-            // Play services unavailable â€” nothing to release.
+            // Play services unavailable — nothing to release.
         }
     }
 
@@ -817,4 +817,5 @@ class MockingService : Service() {
             (status?.get("favoriteId") as? String)?.takeIf { it.isNotEmpty() }
     }
 }
+
 

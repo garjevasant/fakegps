@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 
 /// Manages map tiles stored on the device.
 ///
-/// Areas are added one at a time â€” a searched city, state or country, a saved
-/// location, or the corridor of a route already simulated â€” and listed as a
-/// country â†’ state â†’ district â†’ city tree that can be pruned at any level.
+/// Areas are added one at a time — a searched city, state or country, a saved
+/// location, or the corridor of a route already simulated — and listed as a
+/// country → state → district → city tree that can be pruned at any level.
 class OfflineMapsPage extends StatefulWidget {
   const OfflineMapsPage({super.key});
 
@@ -89,7 +89,7 @@ class _OfflineMapsPageState extends State<OfflineMapsPage> {
                           title: 'No offline maps yet',
                           message:
                               'Download a city, district, state or country and '
-                              'its map tiles stay on the device â€” useful when '
+                              'its map tiles stay on the device — useful when '
                               'testing with no connection.',
                           action: FilledButton.icon(
                             onPressed: () => _addArea(appState),
@@ -104,7 +104,7 @@ class _OfflineMapsPageState extends State<OfflineMapsPage> {
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                               child: Text(
                                 '${_areas.length} area'
-                                '${_areas.length == 1 ? '' : 's'} Â· '
+                                '${_areas.length == 1 ? '' : 's'} · '
                                 '${_formatBytes(totalBytes)} on this device',
                                 style: Theme.of(context)
                                     .textTheme
@@ -161,7 +161,7 @@ class _OfflineMapsPageState extends State<OfflineMapsPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            '${progress.completedTiles} of ${progress.requiredTiles} tiles Â· '
+            '${progress.completedTiles} of ${progress.requiredTiles} tiles · '
             '${_formatBytes(progress.bytes)}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: scheme.onSecondaryContainer,
@@ -325,7 +325,7 @@ class _OfflineMapsPageState extends State<OfflineMapsPage> {
     );
   }
 
-  /// Shows what the download will cost before starting it â€” the point where
+  /// Shows what the download will cost before starting it — the point where
   /// "don't download the entire map" is actually enforced.
   Future<void> _confirmAndDownload(
     AppState appState, {
@@ -359,11 +359,11 @@ class _OfflineMapsPageState extends State<OfflineMapsPage> {
               tooBig
                   ? '$name needs roughly $tiles map tiles, more than the '
                       '${OfflineMapService.maxTiles} this app will store at '
-                      'once. Pick a smaller area â€” a state or a city rather '
+                      'once. Pick a smaller area — a state or a city rather '
                       'than a whole country.'
                   : 'About $tiles tiles, roughly '
                       '${_formatBytes(OfflineMapService.estimateBytes(tiles))}, '
-                      'at zoom ${minZoom.round()}â€“${maxZoom.round()}.',
+                      'at zoom ${minZoom.round()}–${maxZoom.round()}.',
             ),
             if (!tooBig) ...[
               const SizedBox(height: 12),
@@ -508,7 +508,7 @@ class _AreaNodeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final areas = node.allAreas;
-    final subtitle = '${areas.length} area${areas.length == 1 ? '' : 's'} Â· '
+    final subtitle = '${areas.length} area${areas.length == 1 ? '' : 's'} · '
         '${_formatBytes(node.totalBytes)}';
 
     // A node holding a single area and nothing else is just that area.
@@ -582,7 +582,7 @@ class _AreaTile extends StatelessWidget {
         ),
       ),
       title: Text(area.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: Text('${area.level.label} Â· ${area.sizeLabel}'),
+      subtitle: Text('${area.level.label} · ${area.sizeLabel}'),
       trailing: IconButton(
         tooltip: 'Delete ${area.name}',
         icon: const Icon(Icons.delete_outline),
@@ -659,7 +659,7 @@ class _AreaSearchPageState extends State<_AreaSearchPage> {
                           ? 'Nothing with a mappable area'
                           : 'Search for an area',
                       message: _searched
-                          ? 'Try a broader place â€” a city or district rather '
+                          ? 'Try a broader place — a city or district rather '
                               'than a street address.'
                           : 'Only places with a real extent can be downloaded, '
                               'so search a city, district, state or country.',
@@ -686,10 +686,10 @@ class _AreaSearchPageState extends State<_AreaSearchPage> {
                             [
                               area.level.label,
                               if (area.description.isNotEmpty) area.description,
-                              'â‰ˆ ${_formatBytes(
+                              '≈ ${_formatBytes(
                                 OfflineMapService.estimateBytes(tiles),
                               )}',
-                            ].join(' Â· '),
+                            ].join(' · '),
                           ),
                           onTap: () => Navigator.pop(context, area),
                         );
@@ -713,4 +713,5 @@ String _formatBytes(int bytes) {
   if (bytes >= 1024) return '${(bytes / 1024).round()} KB';
   return '$bytes B';
 }
+
 

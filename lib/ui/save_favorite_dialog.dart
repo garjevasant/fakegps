@@ -64,7 +64,7 @@ class _SaveFavoriteDialogState extends State<SaveFavoriteDialog> {
               icon: Icons.map_outlined,
               label: "Coordinates",
               value: location == null
-                  ? "â€”"
+                  ? "—"
                   : "${location.latitude.toStringAsFixed(6)}, "
                         "${location.longitude.toStringAsFixed(6)}",
             ),
@@ -75,7 +75,7 @@ class _SaveFavoriteDialogState extends State<SaveFavoriteDialog> {
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 labelText: "Name",
-                hintText: "Enter a nameâ€¦",
+                hintText: "Enter a name…",
                 border: OutlineInputBorder(),
               ),
             ),
@@ -166,4 +166,5 @@ class _InfoField extends StatelessWidget {
     );
   }
 }
+
 

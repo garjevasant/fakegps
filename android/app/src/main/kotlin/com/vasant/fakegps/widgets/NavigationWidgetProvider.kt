@@ -61,7 +61,7 @@ class NavigationWidgetProvider : AppWidgetProvider() {
                 val remaining = (status["remainingSeconds"] as? Int) ?: 0
                 views.setTextViewText(
                     R.id.nav_remaining,
-                    if (arrived) "Arrived â€” holding position"
+                    if (arrived) "Arrived — holding position"
                     else "${formatRemaining(remaining)} remaining"
                 )
                 val progress = (status["progress"] as? Double) ?: 0.0
@@ -101,4 +101,5 @@ class NavigationWidgetProvider : AppWidgetProvider() {
         }
     }
 }
+
 

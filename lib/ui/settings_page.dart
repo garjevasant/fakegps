@@ -247,7 +247,7 @@ class _SettingsPageState extends State<SettingsPage> {
           'real roads. It is the testing companion for My Globe, a maps & '
           'navigation project.\n\n'
           'Maps by OpenStreetMap contributors and other free providers, '
-          'search by Photon, routing by OSRM â€” all free and keyless.\n\n'
+          'search by Photon, routing by OSRM — all free and keyless.\n\n'
           'Built by ${AppConstants.developerName}.\n'
           '${AppConstants.repositoryUrl}',
         ),
@@ -339,7 +339,7 @@ class _DeveloperCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Developer Â· Fake GPS'
+                        'Developer · Fake GPS'
                         '${version.isEmpty ? '' : ' $version'}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: scheme.onSurfaceVariant,
@@ -509,4 +509,5 @@ class _Tile extends StatelessWidget {
     );
   }
 }
+
 

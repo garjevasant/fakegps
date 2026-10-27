@@ -44,7 +44,7 @@ class FavoriteWidgetConfigActivity : Activity() {
             android.R.layout.simple_list_item_1,
             favorites.map { favorite ->
                 if (favorite.address.isEmpty()) favorite.name
-                else "${favorite.name} â€” ${favorite.address}"
+                else "${favorite.name} — ${favorite.address}"
             }
         )
         listView.setOnItemClickListener { _, _, position, _ ->
@@ -62,4 +62,5 @@ class FavoriteWidgetConfigActivity : Activity() {
         setContentView(listView)
     }
 }
+
 

@@ -2,7 +2,7 @@
 
 import 'package:flutter/services.dart';
 
-/// Delivers location links and shared text that Android handed to the app â€”
+/// Delivers location links and shared text that Android handed to the app —
 /// the one it was launched with, and any that arrive while it is open.
 class LinkIntake {
   static const _channel = MethodChannel('com.mockgps/links');
@@ -36,4 +36,5 @@ class LinkIntake {
     _links.close();
   }
 }
+
 

@@ -14,7 +14,7 @@ import 'package:share_plus/share_plus.dart';
 /// The deck docked to the bottom of the map.
 ///
 /// It behaves like a bottom sheet with three stops. **Peek** is a single bar:
-/// what will be mocked, and one round button to start or stop it â€” the
+/// what will be mocked, and one round button to start or stop it — the
 /// common case never needs more. **Half** adds the full controls for the
 /// active mode while keeping most of the map in view. **Full** lets a long
 /// itinerary use most of the screen. Drag anywhere on the deck to move
@@ -73,7 +73,7 @@ class _ControlDeckState extends State<ControlDeck> {
     return box != null && box.hasSize ? box.size.height : 0;
   }
 
-  /// Body height allowed at each stage. Half keeps the map the hero â€” route
+  /// Body height allowed at each stage. Half keeps the map the hero — route
   /// mode a little more so, since the itinerary only means something next to
   /// the line it describes. Full stops short of the search bar.
   double _halfCap(bool routeMode) =>
@@ -407,14 +407,14 @@ class _PeekBar extends StatelessWidget {
             : appState.currentAddress;
 
     final subtitle = navigating
-        ? '${_duration(appState.mockStatus.remainingSeconds)} left Â· '
+        ? '${_duration(appState.mockStatus.remainingSeconds)} left · '
             '${(appState.mockStatus.progress.clamp(0.0, 1.0) * 100).round()}%'
         : routeMode
             ? _routeSubtitle(appState)
             : _coordinates(appState);
 
     // In route mode the primary action lives in the planner, next to the
-    // timing it depends on â€” a peek-level start would hide what it commits to.
+    // timing it depends on — a peek-level start would hide what it commits to.
     final canActFromPeek = !routeMode || navigating;
 
     return InkWell(
@@ -483,15 +483,15 @@ class _PeekBar extends StatelessWidget {
     final from = appState.routeOriginLabel;
     final to = appState.routeDestinationLabel;
     if (from.isEmpty && to.isEmpty) return 'Plan a route';
-    return '${from.isEmpty ? 'Start' : from} â†’ ${to.isEmpty ? 'Destination' : to}';
+    return '${from.isEmpty ? 'Start' : from} → ${to.isEmpty ? 'Destination' : to}';
   }
 
   static String _routeSubtitle(AppState appState) {
-    if (appState.fetchingRoute) return 'Finding a routeâ€¦';
+    if (appState.fetchingRoute) return 'Finding a route…';
     if (appState.routeError != null) return appState.routeError!;
     final route = appState.plannedRoute;
     if (route == null) return 'Pick a start and a destination';
-    return '${_distance(route.distanceMeters)} Â· '
+    return '${_distance(route.distanceMeters)} · '
         '${_duration(route.osrmDurationSeconds.round())} to drive';
   }
 
@@ -670,7 +670,7 @@ class _FixedSpotPanel extends StatelessWidget {
                     const SizedBox(height: 5),
                     Text(
                       location == null
-                          ? 'â€”'
+                          ? '—'
                           : '${location.latitude.toStringAsFixed(6)}, '
                               '${location.longitude.toStringAsFixed(6)}',
                       style: theme.textTheme.titleMedium?.copyWith(
@@ -1035,8 +1035,8 @@ class _Itinerary extends StatelessWidget {
   }
 
   /// Tapping a waypoint arms it for a map tap; tapping the armed waypoint
-  /// again opens the search instead. That way the common case â€” "somewhere
-  /// about here" â€” needs one tap and no typing, while naming a place is still
+  /// again opens the search instead. That way the common case — "somewhere
+  /// about here" — needs one tap and no typing, while naming a place is still
   /// one tap further.
   Future<void> _pick(
     BuildContext context,
@@ -1180,7 +1180,7 @@ class _WaypointRow extends StatelessWidget {
                             ),
                             if (armed)
                               Text(
-                                'Tap the map â€” or tap again to search',
+                                'Tap the map — or tap again to search',
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: scheme.onPrimaryContainer
@@ -1280,8 +1280,8 @@ class _PaceControl extends StatelessWidget {
                       children: [
                         Text(
                           kmh > 300
-                              ? '$kmh km/h â€” unrealistic'
-                              : 'â‰ˆ $kmh km/h',
+                              ? '$kmh km/h — unrealistic'
+                              : '≈ $kmh km/h',
                           style: theme.textTheme.labelMedium?.copyWith(
                             color: kmh > 300 ? scheme.error : scheme.primary,
                           ),
@@ -1312,7 +1312,7 @@ class _PaceControl extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      value == null ? 'â€”' : '$value',
+                      value == null ? '—' : '$value',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         fontFeatures: const [FontFeature.tabularFigures()],
@@ -1344,8 +1344,8 @@ class _PaceControl extends StatelessWidget {
             children: [
               for (final preset in <(String, int)>[
                 ('Realistic', realistic),
-                ('2Ã— faster', math.max(1, realistic ~/ 2)),
-                ('4Ã— faster', math.max(1, realistic ~/ 4)),
+                ('2× faster', math.max(1, realistic ~/ 2)),
+                ('4× faster', math.max(1, realistic ~/ 4)),
                 ('5 min', 5),
               ])
                 ChoiceChip(
@@ -1638,4 +1638,5 @@ String _clock(DateTime time) {
       '${time.minute.toString().padLeft(2, '0')}';
   return sameDay ? clock : '${time.day}/${time.month} $clock';
 }
+
 

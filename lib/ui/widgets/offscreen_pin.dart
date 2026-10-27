@@ -26,7 +26,7 @@ class OffscreenPinIndicator extends StatelessWidget {
   final double angle;
   final String distanceLabel;
 
-  /// Short badge text â€” a stop number, "Start", "End" â€” or empty for a plain
+  /// Short badge text — a stop number, "Start", "End" — or empty for a plain
   /// direction pill.
   final String label;
   final Color color;
@@ -71,7 +71,7 @@ class OffscreenPinIndicator extends StatelessWidget {
         label: '$describedAs$distanceLabel off screen. '
             'Tap to bring the map back to it.',
         child: Tooltip(
-          message: hasLabel ? '$label Â· $distanceLabel' : distanceLabel,
+          message: hasLabel ? '$label · $distanceLabel' : distanceLabel,
           child: Material(
             color: color,
             shape: const StadiumBorder(),
@@ -125,4 +125,5 @@ class OffscreenPinIndicator extends StatelessWidget {
     );
   }
 }
+
 

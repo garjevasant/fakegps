@@ -23,7 +23,7 @@ class AppRelease {
   /// The tag exactly as GitHub published it, e.g. "v2026-07-29-19".
   final String tag;
 
-  /// Normalised version, e.g. "2.2.0" â€” the leading "v" of the tag is dropped.
+  /// Normalised version, e.g. "2.2.0" — the leading "v" of the tag is dropped.
   final String version;
   final String name;
   final String notes;
@@ -90,7 +90,7 @@ class PlatformClient {
 
 /// Checks GitHub releases for a newer build, and downloads it on request.
 ///
-/// The check is deliberately cheap and unauthenticated â€” one call to the
+/// The check is deliberately cheap and unauthenticated — one call to the
 /// public releases endpoint per app start, suppressed entirely while the user
 /// has snoozed updates for the day.
 class UpdateService {
@@ -129,14 +129,14 @@ class UpdateService {
   }
 
   /// Returns the latest release when it is newer than what is installed,
-  /// otherwise null. Never throws â€” a failed check is silent.
+  /// otherwise null. Never throws — a failed check is silent.
   ///
   /// Two comparison strategies, because a release tag is not always a version:
   ///
   /// * When both the tag and the installed `versionName` look like versions
   ///   ("v2.3.0" against "2.1.0"), they are compared numerically.
-  /// * Otherwise â€” this project currently tags by date, e.g. "v2026-07-29-19"
-  ///   â€” a numeric comparison would be meaningless and would flag an update on
+  /// * Otherwise — this project currently tags by date, e.g. "v2026-07-29-19"
+  ///   — a numeric comparison would be meaningless and would flag an update on
   ///   every launch forever. Instead the newest tag is compared with the last
   ///   one this install has seen, which is seeded silently on first run so the
   ///   app never nags about a release the user may already be running.
@@ -310,7 +310,7 @@ class UpdateService {
     return file.path;
   }
 
-  /// Removes previously downloaded APKs â€” they are only needed until the
+  /// Removes previously downloaded APKs — they are only needed until the
   /// install completes.
   Future<void> cleanUpDownloads() async {
     try {
@@ -331,4 +331,5 @@ class UpdateException implements Exception {
   @override
   String toString() => message;
 }
+
 

@@ -27,7 +27,7 @@ class OnboardingDialog extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "Fake GPS is a testing companion for My Globe, a maps & "
-            "navigation app â€” use it to simulate positions and routes "
+            "navigation app — use it to simulate positions and routes "
             "while developing location features.",
             style: textTheme.bodySmall,
           ),
@@ -49,4 +49,5 @@ class OnboardingDialog extends StatelessWidget {
     );
   }
 }
+
 

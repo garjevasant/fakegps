@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircularProgressIndicator(strokeWidth: 2),
               ),
               SizedBox(width: 14),
-              Expanded(child: Text('Reading the shared locationâ€¦')),
+              Expanded(child: Text('Reading the shared location…')),
             ],
           ),
         ),
@@ -167,14 +167,14 @@ class _HomeScreenState extends State<HomeScreen> {
         content: Text(
           appState.isMocking
               ? 'Now mocking "$label"'
-              : 'Opened "$label" â€” tap the start button to mock it',
+              : 'Opened "$label" — tap the start button to mock it',
         ),
       ),
     );
   }
 
   Future<void> _showInvalidLink(String raw, String reason) {
-    final shown = raw.length > 300 ? '${raw.substring(0, 300)}â€¦' : raw;
+    final shown = raw.length > 300 ? '${raw.substring(0, 300)}…' : raw;
     return showDialog<void>(
       context: context,
       builder: (dialogContext) {
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onHistorySelected(MockHistoryEntry entry) {
     if (entry.isRoute) {
-      // A route summary carries no stored geometry â€” just return to the map.
+      // A route summary carries no stored geometry — just return to the map.
       setState(() => _index = 0);
       return;
     }
@@ -321,4 +321,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 

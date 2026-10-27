@@ -11,7 +11,7 @@ import android.os.Build
 object MockController {
 
     /** Toggles mocking of [favoriteId] by talking to the service directly.
-     *  Returns false when the platform refuses the background start â€” the
+     *  Returns false when the platform refuses the background start — the
      *  caller should then fall back to the [MockControlActivity] trampoline. */
     fun toggleFavoriteDirect(context: Context, favoriteId: String): Boolean {
         val activeId = MockStateStore.getActiveCommand(context)?.optString("favoriteId")
@@ -51,10 +51,11 @@ object MockController {
             }
             true
         } catch (e: Exception) {
-            // Background FGS start rejected (device-specific policy) â€” the
+            // Background FGS start rejected (device-specific policy) — the
             // caller falls back to the foreground trampoline.
             false
         }
     }
 }
+
 

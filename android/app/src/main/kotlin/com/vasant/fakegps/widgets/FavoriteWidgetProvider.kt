@@ -70,7 +70,7 @@ class FavoriteWidgetProvider : AppWidgetProvider() {
                 views.setTextViewText(R.id.widget_name, favorite.name)
                 views.setTextViewText(
                     R.id.widget_status,
-                    if (active) "Mocking â€” tap to stop" else "Off â€” tap to mock"
+                    if (active) "Mocking — tap to stop" else "Off — tap to mock"
                 )
                 views.setInt(
                     R.id.widget_root, "setBackgroundResource",
@@ -92,4 +92,5 @@ class FavoriteWidgetProvider : AppWidgetProvider() {
         }
     }
 }
+
 

@@ -95,7 +95,7 @@ abstract class BaseFavoriteTileService : TileService() {
                 try {
                     requestListeningState(context, ComponentName(context, tileClass))
                 } catch (e: Exception) {
-                    // Quick settings unavailable â€” ignore.
+                    // Quick settings unavailable — ignore.
                 }
             }
         }
@@ -117,4 +117,5 @@ class FavoriteTileService3 : BaseFavoriteTileService() {
 class FavoriteTileService4 : BaseFavoriteTileService() {
     override val slotIndex = 3
 }
+
 

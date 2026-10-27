@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   /// Shows the splash while the app state restores (last session, service
-  /// status, real location) â€” with a short minimum so the logo doesn't flash.
+  /// status, real location) — with a short minimum so the logo doesn't flash.
   Future<void> _start() async {
     await Future.wait([
       context.read<AppState>().init(),
@@ -123,4 +123,5 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
+
 

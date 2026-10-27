@@ -48,8 +48,8 @@ class _Entry {
 ///
 /// Shared by the map's expanding search bar and the full-screen picker so both
 /// offer exactly the same things: coordinates typed or pasted straight in,
-/// Photon results, recent searches, saved locations, the current pin, and â€”
-/// where the caller supports it â€” picking a point off the map.
+/// Photon results, recent searches, saved locations, the current pin, and —
+/// where the caller supports it — picking a point off the map.
 class _PlaceSearchEngine {
   _PlaceSearchEngine(this._service);
 
@@ -189,7 +189,7 @@ Widget _emptyMessage(BuildContext context, String title, String message) {
 /// full-screen view of suggestions.
 ///
 /// Suggestions are produced inside [SearchAnchor.suggestionsBuilder], which is
-/// the only thing the anchor re-runs when the query changes â€” building them
+/// the only thing the anchor re-runs when the query changes — building them
 /// from the parent's state would leave the view showing stale results.
 class PlaceSearchBar extends StatefulWidget {
   const PlaceSearchBar({
@@ -506,4 +506,5 @@ class _PlaceSearchPageState extends State<PlaceSearchPage> {
     );
   }
 }
+
 

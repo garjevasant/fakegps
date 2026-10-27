@@ -42,7 +42,7 @@ class _PermissionsSheetState extends State<PermissionsSheet>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Coming back from a system settings screen â€” re-check everything.
+    // Coming back from a system settings screen — re-check everything.
     if (state == AppLifecycleState.resumed) {
       _refresh();
       context.read<AppState>().refreshMockLocationCheck();
@@ -92,7 +92,7 @@ class _PermissionsSheetState extends State<PermissionsSheet>
           ),
           const SizedBox(height: 4),
           Text(
-            "Everything Fake GPS needs to mock reliably â€” including "
+            "Everything Fake GPS needs to mock reliably — including "
             "long route simulations in the background.",
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -174,4 +174,5 @@ class _PermissionRow extends StatelessWidget {
     );
   }
 }
+
 

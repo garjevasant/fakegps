@@ -26,7 +26,7 @@ class RouteException implements Exception {
   String toString() => message;
 }
 
-/// Road routing backed by the public OSRM server (router.project-osrm.org) â€”
+/// Road routing backed by the public OSRM server (router.project-osrm.org) —
 /// free, keyless, OpenStreetMap-based driving routes.
 class RouteService {
   final http.Client _client = http.Client();
@@ -50,7 +50,7 @@ class RouteService {
           .timeout(const Duration(seconds: 20));
     } catch (_) {
       throw const RouteException(
-        "Could not reach the routing service â€” check your connection.",
+        "Could not reach the routing service — check your connection.",
       );
     }
     if (response.statusCode != 200) {
@@ -88,4 +88,5 @@ class RouteService {
     );
   }
 }
+
 

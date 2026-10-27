@@ -275,7 +275,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
 
   /// Reconciles every marker on the map: the fixed-spot pin in fixed mode, or
   /// the itinerary's green start, numbered blue stops and red destination in
-  /// route mode. Cheap to call â€” it no-ops unless something actually changed.
+  /// route mode. Cheap to call — it no-ops unless something actually changed.
   Future<void> _syncMarkers(AppState appState) async {
     final controller = _mapController;
     if (controller == null || !_mapReady || _draggingMarker) return;
@@ -422,7 +422,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
     _markerToken = '';
   }
 
-  /// Tapping empty map moves the pin there â€” the fastest way to retarget it.
+  /// Tapping empty map moves the pin there — the fastest way to retarget it.
   void _onMapClick(math.Point<double> point, ml.LatLng coordinates) {
     final appState = context.read<AppState>();
     final target = LatLng(coordinates.latitude, coordinates.longitude);
@@ -496,7 +496,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
           .join(', ');
       return parts.isEmpty ? null : parts;
     } catch (_) {
-      // Geocoding unavailable â€” callers fall back to coordinates.
+      // Geocoding unavailable — callers fall back to coordinates.
       return null;
     }
   }
@@ -616,7 +616,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
         setState(() => _edgeMarkers = offscreen);
       }
     } catch (_) {
-      // Region unavailable â€” leave the pills as they were.
+      // Region unavailable — leave the pills as they were.
     }
   }
 
@@ -849,7 +849,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
                   zoom: appState.mapStartZoom,
                 ),
                 minMaxZoomPreference: const ml.MinMaxZoomPreference(1, 20),
-                // Required for cameraPosition to be readable â€” without it the
+                // Required for cameraPosition to be readable — without it the
                 // zoom and compass controls have nothing to act on.
                 trackCameraPosition: true,
                 compassEnabled: false,
@@ -973,7 +973,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
     if (appState.isNavigating) return;
     // Route mode has no fixed pin to move. Moving it anyway would retarget a
     // still-running fixed mock (e.g. the one parked on a finished route's
-    // destination) â€” and pressing and holding a waypoint before dragging it
+    // destination) — and pressing and holding a waypoint before dragging it
     // fires a long press too.
     if (appState.routeMode) {
       unawaited(_offerWaypointMenu(appState, screen, point));
@@ -1015,7 +1015,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
         });
         if (onPin) return;
       } catch (_) {
-        // Projection unavailable â€” offer the menu anyway.
+        // Projection unavailable — offer the menu anyway.
       }
     }
     if (!mounted) return;
@@ -1118,7 +1118,7 @@ class MapViewState extends State<MapView> with WidgetsBindingObserver {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'Not set as the mock location app â€” tap to fix',
+                  'Not set as the mock location app — tap to fix',
                   style: TextStyle(
                     color: scheme.onErrorContainer,
                     fontSize: 13,
@@ -1474,4 +1474,5 @@ class _EdgeMarker {
     );
   }
 }
+
 

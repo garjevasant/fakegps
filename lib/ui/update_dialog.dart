@@ -4,7 +4,7 @@ import 'package:gps_mock/utils/constants.dart';
 
 /// Offers a newer release: update now, or later.
 ///
-/// Ticking "don't remind me again today" snoozes the prompt until tomorrow â€”
+/// Ticking "don't remind me again today" snoozes the prompt until tomorrow —
 /// the app still checks on the next launch, it just stays quiet.
 class UpdateDialog extends StatefulWidget {
   const UpdateDialog({
@@ -24,7 +24,7 @@ class UpdateDialog extends StatefulWidget {
   /// build, so the dialog offers it rather than asserting you are behind.
   final bool comparable;
 
-  /// False when the user asked to check for updates themselves â€” snoozing a
+  /// False when the user asked to check for updates themselves — snoozing a
   /// prompt you opened on purpose makes no sense.
   final bool allowSnooze;
 
@@ -69,7 +69,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
   Future<void> _update() async {
     final release = widget.release;
 
-    // No APK attached to the release â€” send the user to the page instead of
+    // No APK attached to the release — send the user to the page instead of
     // pretending we can install it.
     if (!release.hasApk) {
       await widget.service.platform.openUrl(release.pageUrl);
@@ -140,10 +140,10 @@ class _UpdateDialogState extends State<UpdateDialog> {
             Text(
               widget.comparable
                   ? 'You have ${widget.installedVersion.isEmpty ? 'an older build' : widget.installedVersion}'
-                      '${release.hasApk ? ' Â· ${release.sizeLabel} download' : ''}'
-                  : '${release.name} â€” '
+                      '${release.hasApk ? ' · ${release.sizeLabel} download' : ''}'
+                  : '${release.name} — '
                       'Installed: ${widget.installedVersion.isEmpty ? 'unknown' : widget.installedVersion}'
-                      '${release.hasApk ? ' Â· ${release.sizeLabel} download' : ''}',
+                      '${release.hasApk ? ' · ${release.sizeLabel} download' : ''}',
               style: theme.textTheme.bodySmall?.copyWith(
                 color: scheme.onSurfaceVariant,
               ),
@@ -188,9 +188,9 @@ class _UpdateDialogState extends State<UpdateDialog> {
               const SizedBox(height: 8),
               Text(
                 _total > 0
-                    ? 'Downloading ${(_progress * 100).round()}% Â· '
+                    ? 'Downloading ${(_progress * 100).round()}% · '
                         '${_bytes(_received)} of ${_bytes(_total)}'
-                    : 'Downloadingâ€¦',
+                    : 'Downloading…',
                 style: theme.textTheme.bodySmall,
               ),
             ],
@@ -287,7 +287,7 @@ Future<void> checkForUpdatesInteractively(
 ) async {
   final messenger = ScaffoldMessenger.of(context);
   messenger.showSnackBar(
-    const SnackBar(content: Text('Checking for updatesâ€¦')),
+    const SnackBar(content: Text('Checking for updates…')),
   );
   final release = await service.checkForUpdate(force: true);
   if (!context.mounted) return;
@@ -329,4 +329,5 @@ Future<void> openProjectLink(BuildContext context, String url) async {
 
 /// Shorthand for the repository, used from more than one place.
 String get repositoryUrl => AppConstants.repositoryUrl;
+
 

@@ -25,9 +25,9 @@ class OfflineDownloadProgress {
 /// Downloads and manages map tiles stored on the device, on top of MapLibre's
 /// offline region database.
 ///
-/// Regions are bounding boxes at a bounded zoom range â€” never the whole world.
+/// Regions are bounding boxes at a bounded zoom range — never the whole world.
 /// Each carries metadata naming it and recording where it sits in the
-/// country â†’ state â†’ district â†’ city hierarchy, so the UI can group and
+/// country → state → district → city hierarchy, so the UI can group and
 /// delete by level.
 class OfflineMapService {
   /// Refuses anything past this many resources. A country at street zoom runs
@@ -36,7 +36,7 @@ class OfflineMapService {
 
   /// Multiplier from "tiles in the pyramid" to "resources MapLibre fetches".
   /// A style has several sources plus glyphs and sprites, so the raw tile
-  /// count understates the real download by roughly this much â€” measured
+  /// count understates the real download by roughly this much — measured
   /// against actual downloads rather than guessed.
   static const _resourceFactor = 5;
 
@@ -93,7 +93,7 @@ class OfflineMapService {
     );
   }
 
-  /// How many tiles a box spans across a zoom range â€” the honest size signal
+  /// How many tiles a box spans across a zoom range — the honest size signal
   /// to show before committing to a download.
   static int estimateTiles(
     LatLng southWest,
@@ -237,7 +237,7 @@ class OfflineMapService {
     }
   }
 
-  /// Deletes several areas â€” used when a country or state row is removed.
+  /// Deletes several areas — used when a country or state row is removed.
   Future<void> deleteAreas(Iterable<int> ids) async {
     for (final id in ids) {
       try {
@@ -277,4 +277,5 @@ class OfflineDownloadException implements Exception {
   @override
   String toString() => message;
 }
+
 

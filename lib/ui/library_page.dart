@@ -14,7 +14,7 @@ enum _HistoryFilter { all, spots, routes }
 /// Saved locations and mock history in one place: what you keep on top, what
 /// you did underneath.
 ///
-/// Rows are plain, high-contrast list items rather than image cards â€” they
+/// Rows are plain, high-contrast list items rather than image cards — they
 /// render instantly, work with no connection, and every action is reachable
 /// from an explicit menu rather than a swipe only a sighted mouse-free user
 /// would discover.
@@ -554,7 +554,7 @@ class _SavedRow extends StatelessWidget {
         MenuItemButton(
           leadingIcon: const Icon(Icons.grid_view_rounded),
           onPressed: () => _pickTile(context),
-          child: const Text('Quick-settings tileâ€¦'),
+          child: const Text('Quick-settings tile…'),
         ),
         MenuItemButton(
           leadingIcon: const Icon(Icons.copy_rounded),
@@ -798,7 +798,7 @@ class _HistoryRow extends StatelessWidget {
     final status = theme.status;
 
     final title = entry.isRoute
-        ? '${entry.fromLabel.isEmpty ? 'Route' : entry.fromLabel} â†’ '
+        ? '${entry.fromLabel.isEmpty ? 'Route' : entry.fromLabel} → '
             '${entry.toLabel.isEmpty ? 'destination' : entry.toLabel}'
         : (entry.label.isEmpty
             ? '${entry.latitude.toStringAsFixed(4)}, '
@@ -948,4 +948,5 @@ class _Pill extends StatelessWidget {
     );
   }
 }
+
 

@@ -1,4 +1,4 @@
-# Fake GPS
+﻿# Fake GPS
 
 > A clean Android GPS simulation tool for testing location-based apps without leaving your desk.
 
@@ -87,3 +87,4 @@ Fake GPS is intended for software testing, development, privacy experiments in c
 ## License
 
 This project is released under the MIT License. See [LICENSE](LICENSE).
+

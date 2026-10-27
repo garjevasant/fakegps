@@ -21,7 +21,7 @@ class MainActivity : FlutterActivity() {
     private var linksChannel: MethodChannel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // A recreated activity still carries its original intent â€” only a
+        // A recreated activity still carries its original intent — only a
         // fresh launch delivers a new link.
         if (savedInstanceState == null) pendingLink = linkFrom(intent)
         super.onCreate(savedInstanceState)
@@ -271,4 +271,5 @@ class MainActivity : FlutterActivity() {
         }
     }
 }
+
 

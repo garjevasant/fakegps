@@ -10,13 +10,13 @@
   /// Package name identifying this app when fetching raster tiles.
   static const String tileUserAgentPackage = "com.vasant.fakegps";
 
-  /// OpenStreetMap raster tiles â€” free, no API key or account required.
+  /// OpenStreetMap raster tiles — free, no API key or account required.
   static const String osmTileUrl =
       "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 
   /// Required attribution for OpenStreetMap tiles; must stay visible on the
   /// map screen.
-  static const String osmAttribution = "Â© OpenStreetMap contributors";
+  static const String osmAttribution = "© OpenStreetMap contributors";
 
   // ----------------------------------------------------------- the project
 
@@ -41,4 +41,5 @@
   static const String osrmRouteBaseUrl =
       "https://router.project-osrm.org/route/v1/driving/";
 }
+
 
